@@ -1,0 +1,131 @@
+/**
+ * Pada chapter ini kita akan belajar mengenai Struktur data.
+ * STRUKTUR DATA -> Cara untuk menyimpan dan mengatur seluruh data yg ada agar lebih efisien.
+ *                  tanpa adanya struktur data, data yang ada akan berserakan seperti lemari yang berantakan.
+ *                  Dimana sepatu yang harusnya ada di rak sepatu bawah, malah muncul di rak baju dress.
+ *
+ * Kemudian Struktur Data juga memiliki elemennya sendiri bernama tipe data dan variabel.
+ * VARIABEL -> sederhananya variabel adalah tempat kita nanti menyimpan sebuah data(nilai)
+ *             Pada Kotlin, ada 2 jenis tipe variabel yaitu val dan var
+ *             -- val = jenis yang tidak dapat diubah nilainya (Imutable)
+ *             -- var = jenis yg dapat diubah nilai variabelnya (Mutable)
+ *
+ */
+
+fun main(){
+    val janDiubah = "Jokowi"
+    var bisaDiubah = 23
+    //uniknya di Kotlin, kita tidak perlu mendeskripsikan tipe data untuk variabelnya
+    //kita tidak perlu menuliskan Int, String, Double, Float. Hanya perlu menentukan
+    //isinya bisa diubah atau tidak menggunakan var atau val
+
+    //disini saya akan mencoba mengubah data var dahulu
+    bisaDiubah = 25
+    //bisa dilihat bahwa data nya bisa berubah. Untuk merubah nilai suatu variabel, anda
+    //hanya perlu menuliskannya ulang tanpa var atau val.
+
+    //untuk yg tipe val, jika anda berusaha mengubahnya, maka akan terjadi error
+
+    println("Nama saya adalah : $janDiubah")
+    println("Umur saya tahun ini adalah : $bisaDiubah")
+    //keyword 'println' adalah untuk mencetak apa yang di dalam tanda kutip dan juga mencetak
+    //enter setelahnya. Sedangkan untuk memanggil variabel yang sudah kita buat, kita hanya perlu
+    //menambahkan keyword '$' didepan nama variabel tadi.
+}
+
+/**
+ * masuk ke tipe data.
+ * TIPE DATA -> gampangnya seperti ini, pada Kotlin, nilai"yang tadi kita masukkan ke dalam
+ *              variabel tersebut, memiliki jenis tipe data sendiri. Untuk membedakan satu sama lain.
+ *              Bilangan misalnya, ada 6 tipe data untuk bilangan (Byte, Short, Integer, Long, Float, Double);
+ *              ada 1 tipe data untuk logika (Boolean) yg mana outputnya hanya true atau false. Kemudian satu
+ *              tipe data untuk karakter (Char) dimana hanya bisa menyimpan 1 huruf saja. Tipe data untuk
+ *              kata (String) Dan terakhir tipe data untuk menyimpan banyak data"yang berurutan (Array)
+ */
+
+fun tipeData(){
+
+    //dibawah ini adalah cara pendeklarasian variabel dengan tipe data, walau sebenarnya jika kita
+    //langsung mengisi variabel tersebut tanpa tipe data juga bisa.
+    val nama : String = "Joko Widodo"
+
+    //sedangkan dibawah ini adalah cara nomor 2 nya, dimana pemasukan nilai variabelnya ada di
+    //listing code selanjutnya.
+    var usia : Int
+    var tinggi : Double
+
+    //dibawah ini adalah pemasukan nilai kedalam variabel. Dimana Int menunjukan bilangan biasa, sedangkan
+    //Double atau Float untuk bilangan desimal.
+    usia = 25
+    tinggi = 180.0
+}
+
+/**
+ * ARRAY -> Seperti yg disebutkan sebelumnya, Array adalah sebuah tipe data yang digunakan untuk
+ *          menyimpan kumpulan"data yang berurutan. Dalam Array, kita hanya bisa menyimpan data"dengan
+ *          jenis yang sama saja. Misal untuk Int, jika kita masukkan String, maka akan error.
+ *
+ * LIST -> Hampir sama dengan array, tapi memiliki kelebihan dan kekurangan dibanding array.
+ */
+
+fun contohArray(){
+    val arr1 = arrayOf(10,32,21)
+    //ada beberapa pendeklarasian array termasuk seperti yg diatas. Formulanya adalah sebagai berikut :
+    //angka"diatas merupakan nilai dari setiap indeks dalam array. Dimana indeks selalu dimuali dari angka 0.
+
+    //                                     TIPE 2
+    //                var/val namaVariabel = Array(panjangArray)
+
+    val arr2 = Array(3){1*(it + 1)}
+    //list code diatas berarti kita membentuk variabel array dengan nama arr2 yang tidak bisa diubah,
+    //dengan ukuran arraynya adalah 3 buah (indeks0, indeks1, dan indeks3). Lalu, hal di dalam kurung kurawal
+    //merupakan untuk isi indeks di dalam array arr2 tersebut.
+
+    //dibawah ini juga merupakan pengisian indeks array selain cara diatas.
+    arr2[0]=3
+    println(" isinya : ${arr2[0]}")
+    //kemudian untuk pemanggilan tiap indeks di array, maka caranya seperti diatas, tanda '$' diikuti
+    //kurung kurawal kemudian nama array, kurung siku, dan nomor indeksnya.
+}
+
+fun contohList(){
+    //untuk list, kurang lebih sama seperti array. Bedanya, list dapat menampung jenis data yang memiliki tipe berbeda.
+    val mList = mutableListOf(1,'x',false, "Saya", "Suka")
+    println("mLIst 1: $mList")
+
+    //dibawah ini merupakan cara memasukkan elemen baru ke dalam list kotlin. Syaratnya harus var(mutable)
+    mList.add("Kamu")
+    //keuntungannya lagi, List bisa ditambahkan sesuai hati, tidak seperti array yang hanya menampung elemen
+    //sesuai dengan ukuran yang ditentukan di awal. Kode baris diatas berarti kita menambahkan eleman baru bertipe String
+    //ke urutan terakhir dalam List.
+
+    //Lalu bagaimana Jika kita ingin memasukkan elemen pada indeks tertentu? Caranya seperti dibawah
+    mList.add(2, "Index2")
+    //ini berarti kita menambahkan elemen baru bertipe Integer di indeks nomor 2.
+
+    //pada List kita juga bisa menghapus elemen tertentu.
+    mList.remove(false)
+    //kode diatas berarti kita akan menghapus elemen bernilai false di list tersebut.
+    //sedangkan untuk menghapus semua elemen List bisa digunakan kode dibawah ini
+    mList.removeAll {true}
+    //kode diatas berarti kita menuliskan perintah untuk menghapus semua elemen dalam array.
+    //dan perintah tersebut bernilai true
+
+    //untuk mendapatkan ukuran list
+    println(mList.size)
+
+    //untuk mengecek apakah ada elemen tertentu di list
+    println(mList.contains('x'))
+
+    //melihat  index dari sebuah elemen pada list di Kotlin
+    println(mList.indexOf('x'))
+
+    //Melihat index terakhir sebuah elemen pada list di Kotlin
+    println(mList.lastIndexOf('x'))
+
+    //Melihat index pertama pada list
+    println(mList.first())
+
+    //Melihat index terakhir pada list
+    println(mList.last())
+}
