@@ -1,1 +1,212 @@
+/**
+ * Pada Chapter ini kita akan belajar mengenai CONTROL FLOW.
+ * Fungsi CONTROL FLOW sendiri adalah untuk melakukan perintah yang memiliki berbagai kondisi dan berulang.
+ * Dalam Kotlin, ada beberapa jenis Control Flow :
+ *        -> If-Else
+ *        -> When
+ *        -> Range
+ *        -> For-Loop
+ *        -> While-Do dan Do-While
+ *        ->Break dan Continue
+ */
+fun main() {
+    println("================================================================================")
+    //nama()
+    //TTL()
+    //Kampus()
+    //println("Fun Fact tentang saya adalah saya suka makan")
+    //hariIni(30)
+    //print("Ini adalah contoh penggunaan until = ")
+    //rangeExpression()
+    //rangeWhen(78)
+    //whileExp()
+    // breakContinue()
+    //returnNilai()
+    println("================================================================================")
+}
+
+/**
+ * Untuk kondisi yang pertama adalah If-Else. Kondisi ini dimulai dengan kondisi kemudian
+ * eksekusi perintah. Kondisi yang ada tidak harus satu kondisi, bisa lebih. Kondisi Pertama akan
+ * menggunakan keyword 'if', untuk yg kedua dan seterusnya (sampai sebelum terakhir) menggunakan
+ * keyword 'else if'. Sedangkan untuk kondisi yang terakhir menggunakan keyword 'else' saja.
+ */
+fun hariIni(tanggal:Int){
+    when (tanggal){
+        14 -> println("Ini ulang tahun adik saya")
+        28 -> println("Ini ulangtahun kakek saya")
+        //Kode diatas dapat dibaca sebagai "Ketika nilai dari tanggal itu adalah
+        //14, maka yang dicetak adalah baris -Ini ulang tahun adik saya-.
+        //Sedangkan jika nilai dari tanggal itu adalah 28, maka yg dicetak adalah
+        //  -Ini ulangtahun kakek saya-
+        30 -> {
+            if (tanggal > 31){
+                println("Masukin tanggal!")
+            }
+            else if (tanggal < 1){
+                println("Tanggal ga ada yg minus")
+            }
+            else {
+                println("Au ah gelap")
+            }
+        }
+        else -> println("ga tau dan ga mau tau")
+
+        //Untuk baris if else diatas, kode bisa dibaca seperti ini.
+        //untuk tanggal yg nilainya 30, maka ada beberapa kondisi. Jika tanggalnya
+        //lebih dari 31 maka pesan dibawahnya akan dicetak. Jika tanggal yang dimasukkan kurang dari 1,
+        //maka pesan dibawahnya akan dicetak.
+        //Jika nilai yang dimasukkan tidak masuk kondisi"yang disebutkan diatas, maka
+        //yang dicetak adalah --ga tau dan ga mau tau--
+    }
+}
+
+fun nama(){
+    val namaPanjang = "Joko Widodo"
+    val namaPanggilan = "Jokowi"
+
+    println("Nama panjang saya adalah $namaPanjang")
+    println("Nama panggilan saya adalah $namaPanggilan")
+}
+
+fun TTL(){
+    val tanggal = 21
+    val bulan = 2
+    val tahun = 1985
+    println("Tanggal lahir saya adalah $tanggal - $bulan - $tahun")
+}
+
+fun Kampus(){
+    val univ = "Universitas Indonesia"
+    val jurusan = "Perteknikan"
+
+    println("Kampus dan jurusan saya adalah $univ-$jurusan")
+}
+
+/**
+ * Expression selain if else dan when sleanjutnya adalah RANGE EXPRESSION dimana terdiri dari 3 operator
+ * yaitu 'until', 'rangeTo()', 'downTo()'. Ada beberapa cara deklarasi range expressions.
+ * Contohnya adalah seperti dibawah.
+ */
+
+fun rangeExpression(){
+    //pendeklarasian fungsi yg 1 adalah dengan val/var kemudian diikuti nama variabel
+    //lalu range yang diingin kan.
+    val minggu = 1..7
+    println("satu minggu adalah $minggu")
+
+    //Cara yg kedua adalah dengan mengganti keyword '..' dengan 'rangeTo'
+    val bulan = 1.rangeTo(4)
+    println ("dan satu bulan ada 4 minggu = $minggu")
+
+    //Cara yg 3 adalah ketika batas bawal nilainya lebih tinggi dari batas akhir, maka menggunakan downTo
+    val conto = 7 downTo 1
+
+    //cara yg ke 4 adalah dengan menggunakan until seperti dibawha ini.
+    //akan tetapi, karena until termasuk half range expression maka batas awal
+    //dalam hal ini nilai 0 ikut masuk. Akan tetapi batas akhir tidak ikut masuk.
+    val conto2 = 1 until 4
+    //ini berarti isinya hanya angka 1, 2, dan 3. Angka 4 tidak termasuk.
+
+    //kita juga bisa membuat range yang memiliki jarak lebih dari satu dengan cara dibawah ini
+    val conto3 = 0.rangeTo(5) step 2
+    //isinya adalah angka 2 dan 4. Angka 5 tidak termasuk karena jaraknya dari angka 4 hanya 1.
+
+    val arr = arrayOf(1,2,3,4,5,6,7)
+    for(i in 0 until arr.size){
+        print("$i, ")
+    }
+    println(" ")
+
+    /**
+     * Selain expression"diatas, Kotlin juga memiliki Loop expressions (for, while-do, dan do-while)
+     * Untuk perulangan for dapat dicontohkan dibawah ini. Kode di bawah ini bisa dibaca seperti berikut:
+     * Kondisi : untuk variabel i di array bernama 'arrHuruf'. Eksekusi : Cetak semua nilai di dalam array tsb.
+     */
+    val arrHuruf = arrayOf('a','b','c')
+    for (i in arrHuruf){
+        print("$i ,")
+    }
+    println(" ")
+    arrHuruf.forEach(){item->
+        println(item)
+    }
+
+    for ((index, item) in arrHuruf.withIndex()){
+        //println("item = $item, index = $index")
+    }
+}
+
+fun rangeWhen(nilai:Int){
+    val nilai = 71
+    when(nilai){
+        in 0..50 -> println("Nilai anda adalah E")
+        in 51..60 -> println("Nilai anda adalah C")
+        in 61..70 -> println("Nilai anda adalah B")
+        in 71..80 -> println("Nilai anda adalah B+")
+        in 81..90 -> println("Nilai anda adalah A-")
+        in 91..100 -> println("Nilai anda adalah A")
+        else -> println("anda siapa?")
+    }
+}
+
+/**
+ * Dibawah ini meurpakan function representasi dari contoh while-do dan do-while.
+ * Untuk while-do, yang dituliskan terlebih dulu adalah kondisinya, baru perintahnya.
+ * Sedangkan untuk do-while sebaliknya. Perintahnya dulu baru kondisinya.
+ */
+fun whileExp(){
+    var angka = 5
+    while (angka < 10){
+        println("$angka")
+        angka++
+        //jika tidak ada kode diatas, maka akan terjadi infinite loop (looping terus)
+        //kode diatas berarti ketika nilai variabel 'angka' lebih dari 10, maka
+        //perintahnya adalah mencetak angka tersebut. Kode angka++ itu berarti program harus
+        //me-looping angka tersebut. Dimana nilai loop nya adalah 1.
+    }
+    println("Di bawah ini adalah ekspresi do-while")
+    var nilai = 5
+    do {
+        println("Do while loop $nilai")
+        nilai = nilai + 1
+    } while (nilai <= 10)
+}
+
+/**
+ * JUMP Expressions -> expressions untuk berhenti atau melanjutkan loop. Ada 3 di Kotlin :
+ *                  -> Return (scr default kembali dari penutup function terdekat)
+ *                  -> Break (mematikan loop yang sedang berjalan)
+ *                  -> Continue (melanjutkan proses looping/melewati 1 angka tertentu)
+ */
+fun breakContinue(){
+    var angka = 1
+    while (angka <10){
+        if (angka ==5){
+            angka++
+        }
+        println("$angka")
+        angka++
+        if (angka == 8){
+            break
+            //Ini berarti jika angka sudah mencapai 8, maka perulangan akan otomatis berhenti.
+        }
+    }
+    println("Perulangan berhenti di angka $angka")
+}
+
+fun returnNilai():Int{
+    val nama = "uul"
+    return 26
+    //Ini berarti nilai default nama adalah 26.
+    for (i in 1..5){
+        println("$i Selalu dicetak")
+        if (i>1 && i<5){
+            continue
+            //ini berarti jika angka lebih dari 1 dan kurang dari 5, maka perintah berikutnya akan
+            //dilewati atau tidak dieksekusi.
+            println("$i Tidak pernah dicetak")
+        }
+    }
+}
 
