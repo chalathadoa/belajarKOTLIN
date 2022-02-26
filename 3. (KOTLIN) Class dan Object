@@ -1,0 +1,157 @@
+/**
+ * Di topik ini, kita belajar mengenai class dan object
+ */
+
+/**
+ * CLASS -> kerangka untuk membuat property dan method. Diibaratkan class adalah manusia,
+ * object adalah 'Sabrina'. property adalah nama, umur, berat. method/function adalah
+ * sehari"Sabrina suka berenang dan jogging
+ */
+
+//TEMPLATE
+class Manusia{
+    //harus diawalai huruf besar
+    //nama file untuk menyimpan kode harus sama dengan nama class yang ditulis
+    //default class nya adalah PUBLIC
+
+    //untuk memberi property ke class
+    var nama : String = "Uul"
+    var kelamin : String = "Wanita"
+    var tinggi : Int = 155
+    var berat : Int = 55
+    fun eat() = "Butuh Makan"
+}
+
+//untuk MENGAKSES class
+
+fun main() {
+    //manusia adalah nama OBJECT, Manusia adalah nama CLASS
+    val manusia = Manusia()
+    println("Nama : ${manusia.nama}")
+    println("Berat : ${manusia.berat}")
+
+    //contoh pemanggilan constructor
+    val samsung = Hape(
+            berat = 1,
+            harga = 20000,
+            merk = "Samsung"
+    )
+    println("Berat : ${samsung.berat}")
+    println("Berat : ${samsung.harga}")
+    println("Berat : ${samsung.merk}")
+
+    //pemanggilan secondary constructor
+    val Somethinc = Kosmetik("Somethinc", "Hydration Toner", 80000)
+
+    //pemanggilan object yang dibuat di luar fungsi main
+    ContohObject.contohFunction1()
+    ContohObject.contohFunction2()
+
+    //Deklarasi variabel untuk Secondary constructor dengan parent dan child class
+    val satu = Murid("Aliyah", 19)
+}
+
+/**
+ * OBJECT -> instance dari suatu class. Fungsinya untuk mengambil isi dari class.
+ * dan juga untuk mengakses semua property dan method pada class.
+ *
+ * untuk membuat object, kita perlu untuk mendeklarasikan object dengan mengikutkan
+ * class bawaannya. ex:
+ *
+ * val sabrina = Manusia()
+ * --val sabrina = deklarasi object, dan nama object nya adalah sabrina.
+ * --Manusia = mengambil isi class Manusia untuk object.
+ */
+
+object ContohObject{
+    fun contohFunction1():String{
+        println("Ini contoh function 1")
+        return "contoh 1"
+    }
+
+    fun contohFunction2(): String{
+        println("Ini contoh function 2")
+        return "contoh 2"
+    }
+}
+
+/**
+ * CONSTRUCTOR ->  (org pertama yg bertintang menyiapkan yg kita inginkan)
+ * ketika membuat object, semua property dalam kelas harus
+ * punya Nilai. Kita dapat memanfaatkan constraktor ini "Untuk Membuat
+ * Sebuah Nilai atau Inisialisasi Property dalam Class"
+ *
+ * ada 2 tipe == PRIMARY Constructor -> dideklarasikan di dalam HEADER class.
+ *               untuk memudahkan request object yang nantinya akan memanggil class tsb
+ *            == SECONDARY Constructor -> ketika kita membuat lebih dari satu
+ *               constructor, maka untuk pembuatan yg kedua dan selanjutnya,
+ *               kita wajib menggunakan keyword constructor.
+ */
+
+class Hape(
+        //primary constructor
+        val berat: Int,
+        val harga: Int,
+        val merk: String
+) {
+    //blok kode body
+}
+
+//Secondary Constructor
+class Kosmetik {
+    var merk: String
+    var jenis: String
+    var harga: Int
+    //untuk constructor harus diinisialisaisi dulu (diberi nilai)
+    //bisa dengan cara seperti di ppt, atau dengan cara di bawah ini
+    //var harga : Int = null
+
+    //Initializer Block
+    init{}
+
+    //atau initnya bisa diganti dengan:
+    //constructor{}
+
+    //secondary constructor
+    constructor(merk: String, jenis: String, harga: Int){
+        this.merk = merk
+        this.jenis = jenis
+        this.harga = harga
+
+        println("Merk Kosmetik = $merk")
+        println("Jenis Kosmetik = $jenis")
+        println("Harga Kosmetik = $harga")
+    }
+}
+//constructor method :
+//-> merupakan method/function yang pertama kali dijalankan ketika objek dibuat.
+//-> nama METHOD CONSTRUCTOR harus sama dengan NAMA CLASS
+//-> secara default constuctor itu seperti NamaKelas()
+
+//cara kedua untuk membuat OBJECT adalah dengan membuat file object terpisah
+//kemudian ditambahkan function yang sesuai
+
+//Secondary constructor dengan parent dan child class
+//di bawah ini adalah PARENT CLASS nya
+open class Sekolah{
+    constructor(nama:String, umur: Int){
+        println("PARENT CLASS constructor")
+        println("Nama Muridnya: ${nama.toUpperCase()}")
+        println("Umur Muridnya: $umur")
+    }
+}
+
+//di bawah ini adalah CHILD CLASS nya
+class Murid:Sekolah{
+    constructor(nama: String, umur: Int): super(nama, umur){
+        println("CHILD CLASS constructor")
+        println("Namanya : $nama")
+        println("Umurnya: $umur")
+    }
+}
+
+//semua yang bisa dilakukan oleh parent class akan bisa dilakukan juga oleh child class
+//ini namanya adalah INHERITANCE atau pewarisan. Sedangkan keyword 'super' digunakan
+//untuk memanggil secondary constructor dari parent class.
+//keywprd 'open' untuk menunjukkan bahwa class tersebut merupakan parent class
+//keyword 'override' menunjukkan bahwa function tersebut adalah milik si induk/parent
