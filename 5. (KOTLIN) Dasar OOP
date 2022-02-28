@@ -1,0 +1,177 @@
+/**
+ * FUNCTION wajib ada kurung nya,
+ * kalo CLASS ga wajib ada kurungnya. Jika class ada kurungnya, biasanya
+ * itu untuk CONSTRUCTOR (primary).
+ *
+ * CONSTRUCTOR secondary saja yg digunakan tidak apa". Tidak harus ada
+ * yg primary.
+ *
+ * code 'this.nama' thismerujuk pada variabel paling atas.
+ *
+ */
+
+/**
+ * Disini kita akan mempelajari tentang OOP dasar
+ * OOP adalah metode merancang program menggunakan Class dan Object.
+ * Kelebihan:
+ *           -> OOP lebih cepat dan gampang untuk dieksekusi
+ *           -> OOP punya struktur yang jelas
+ * CLASS (Blueprint/cetakan) = Encapsulation, Abstraction, Constructor, Overloading
+ * OBJECT (Hasil dari class) = Access Modifier, Inheritance, Polymorphism, Overriding
+ */
+
+//contoh class dan object
+fun main(){
+    //class yg sudah di deklarasikan disebut sbg object. 1 Class bisa membentuk
+    //lebih dari 1 object
+    var mobilKuning = Car("Kuning", "sport")
+    var mobilHitam = Car("Hitam","Keluarga")
+}
+
+//contoh class yang berperan sbg blueprint
+class Car(warna: String, type: String){
+
+}
+
+
+//deklarasi object dalam kurung di function, akan lgsg otomatis bertipe val, tidak bisa diubah ke var
+//sedangkan jika di class, kita bisa mengubahnya var atau val.
+
+/**
+ * ENCAPSULATION -> cara membungkus data kita. Class memiliki attribute dan method yang disebut MEMBER
+ *               -> sebuah konsep yang memberikan akses terhadap member dan class.
+ * Biasanya akan ada tingkatan akses (access modifier) yang menentuan dari mana saja member tsb dapat diakses
+ * Penulisan access modifier :
+ *           <Access Modifier> <val/var> <nama variabel>:<tipe data>
+ *                private         val           name    :   String   = "Sabrina
+ *
+ * Access Modifier yang berlaku di Kotlin :
+ *  PUBLIC -> Class, Subclass, Module, World
+ *  (artinya, modifier public bisa diakses oleh Class, Subclass, Module, World)
+ *  PRIVATE -> Class
+ *  PROTECTED -> Class, Subclass
+ *  INTERNAL -> Class, Subclass, Module
+ *  --subclass adalah class anak
+ *  --world artinya bisa diakses dari mana saja dalam satu project
+ */
+
+/**
+ * INHERITANCE (pewarisan) -> konsep pewarisan class pada OOP
+ *
+ * istilah INHERITANCE yang penting :
+ *           => Super class (parent class) == Class yang semua fiturnya diwariskan kepada
+ *                                            turunannya.
+ *           => Sub class (Child class)    == Class turunan yang mewarisi semua fitur dari
+ *                                            class lain. Class child dapat menambah field dan
+ *                                            methodnya sendiri yang berbeda dengan parent class
+ *           => Reusability                == ketika kita membuat class baru, kita bisa menurunkan atau
+ *                                            menggunakan kembali field dan method dari class yang sudah ada.
+ *
+ *
+ */
+
+open class Bapak {
+    open fun ngantukan(){}
+    open fun lupaan(){}
+    open fun diabetes(){}
+}
+//2 method khusus untuk inheritance : Overriding dan Overloading
+// Override (mengabaikan). dengan begitu, ketika kita memanggil method yang sudah di overriding,
+// maka yang terpanggil adalah method dari class anak bukan Bapak.
+
+class Anak : Bapak (){
+    override fun ngantukan(){
+        //override untuk agar child class bisa mengakses function dari parent
+        super.ngantukan()
+    }
+    override fun diabetes(){
+        super.diabetes()
+    }
+}
+
+//Overloading -> nama methodnya sama namun parameternya beda. Pada contoh dibawah ini,
+// ada 2 method bernama luas. keunikan overloading adalah kamu bisa menggunakan
+// nama method yang sama dalam satu kelas. method luas pertama menggunakan parameter dgn tipe data
+// float, sedangkan untuk method luas kedua menggunakan tipe data double untuk parameternya
+class Lingkaran{
+    //method menghitung luas dengan jari-jari
+    fun luas(r:Float): Float{
+        return (Math.PI * r * r).toFloat()
+    }
+    //method menghitung luas dengan diameter
+    fun luas(d: Double): Double {
+        return (1/4*Math.PI*d)
+    }
+}
+
+/**
+ * POLYMORPHISM -> Poly(banyak) dan morfisme(bentuk).
+ *              -> sebuah prinsip dalam biologi dimana organisme atau spesies dapat memiliki
+ *                 banyak bentuk atau tahapan
+ *              -> class dapat memiliki banyak bentuk (isi, parameter, dan tipe data) method berbeda walau namanya sama.
+ *
+ * dalam kotlin, polymorphism dibagi menjado 2 (Static dan Dinamic)
+ *  STATIC POLYMORPHISM == menggunakan method overloading (class yg memiliki nama method sama dengan parameter dan tipe data berbeda)
+ *  DINAMIC POLYMORPHISM == menggunakan method overriding. biasanya saat kita menggunakan inheritance dan implementasi interface
+ *
+ */
+
+/**
+ * interface TestInterface {
+fun interfaceSatu()
+fun interfaceDua()
+}
+ */
+
+//interface wajib ada override, sedangkan yg child class tidak wajib
+
+open class BangunDatar {
+    open fun luas(): Float{
+        println("Menghitung luas bangun datr")
+        return 0F
+    }
+    open fun keliling(): Float{
+        println("Menghitung keliling bangun datar")
+        return 0F
+    }
+}
+class Segitiga(var alas: Int, var tinggi: Int): BangunDatar(){
+    override fun luas():Float {
+        return super.luas()
+    }
+}
+//class Persegi(var sisi:Int): BangunDatar(){
+    //override fun luas():Float{
+        //return (sisi*sisi).toFLoat()
+    //}
+
+    //override fun keliling(): FLoat{
+        //return (sisi*4).toFloat()
+    //}
+//}
+class LIngkaran(var r:Int):BangunDatar(){
+    override fun luas(): Float{
+        return (Math.PI*r*r).toFloat()
+    }
+    //override fun keliling(): Float{
+        //return (2*Math.PI*r).toFLoat()
+    //}
+}
+
+/**
+ * ABSTRACTION -> bisa digunakan saat kita tau fungsi apa yg harus dimiliki class tetapi tidak tau
+ *                bagaimana fungsi tersebut harus diimplementasikan.
+ *                Ketika suatu class melakukan extend ke class abstract, class tsb dapat mengimplementasikan
+ *                method abstract yg ada di dalam class abstract tadi.
+ */
+
+//contoh class abstract sebagai parent Class
+abstract class MakhukHidup (var alatNafas: String = ""){
+    abstract fun bernafas(alatNafas: String)
+}
+
+class ikan: MakhukHidup(){
+    override fun bernafas(alatNafas: String){
+        this.alatNafas = alatNafas
+    }
+}
