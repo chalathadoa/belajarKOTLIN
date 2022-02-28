@@ -1,0 +1,199 @@
+/**
+ * di chapter 5 ini, kita akan belajar tentang FUNCTION/METHOD
+ */
+
+/**
+ * FUNCTION ->  blok kode yg ditulis untuk melakukan tugas tertentu.
+ *              pada tingkat lebih tinggi,function dapat memiliki parameter(yg
+ *              melakukan akhir tertentu input dan akhirnya mengembalikan nilai)
+ *
+ *              *dapat memecah program menjadi sub"program agar lebih efisien
+ *              function HARUS dibuat di dalam sebuah CLASS
+ */
+
+//contoh function main
+fun main(){
+    println("Hello World!")
+    //println sebenarnya adalah sebuah function juga
+
+    parameter(dua = "nomor")
+    //kata nomor diatas, disebut argumen (ketika parameter dikirimkan ke sebuah function)
+
+    //pemanggilan fungsi ganjik genap
+    println("==========GANJIL GENAP=========")
+    ganjilGenap(23)
+
+    //pemanggilan fungsi fibonacci
+    println("==========FIBONACCI=========")
+    fibonacci(100)
+
+    //pemanggilan return value
+    println("==========RETURN VALUE=========")
+    returnValue(3,5)
+
+    //pemanggilan extension function JUDUL
+    val judul = "saya ingin menjadi android developer"
+    println(judul.toTitleCase())
+}
+//kalo di dalam function, hal di dalam kurung disebut PARAMETER
+//kalo di dalam class, hal di dalam kurung disebut CONSTRUCTOR
+
+fun satu(message: Any?){
+    //arti dari tanda tanya di atas adalah tanda kalo function ini boleh NULL. jika
+    //tidak ada ?, maka isi function harus ada nilainya.
+    System.out.println()
+}
+
+private fun dua(): String {
+    println("Sembarang")
+    return dua()
+}
+/**
+ * 'private' -> adalah visibility modifier. Defaultnya adalah public
+ * 'dua' -> adalah nama fungsi. biasanya awal hurufnya kecil
+ * 'String' -> adalah nilai kembalian. Tipe data dari nilai yang dikembalikan setelah fungsi dieksekusi.
+ */
+
+fun parameter(satu : String = "angka", dua : String){
+    //tanda tanya diatas, ketika kita melakukan pemanggilan, maka dua boleh diisi null.
+    //akan tetapi jika tidak ada tanda tanya, maka pemanggilan untuk parameter dua
+    //harus ada nilainya
+    println("$satu - $dua")
+}
+
+/**
+ * saat menggunakan beberapa parameter, pemanggilan function harus:
+ * -> memiliki jumlah argumen sama
+ * -> argumen harus dimasukan dlm urutan yg sama
+ */
+
+
+
+//CHALENGE ganjil genap
+fun ganjilGenap(angka:Int){
+    //angka genap
+    if (angka%2 == 0){
+        println("Angka ini adalah genap")
+    }
+    else {
+        println("Angka ini adalah ganjil")
+    }
+}
+
+//CHALEENGE fibonacci
+fun fibonacci(j:Int) {
+    var angka1 = 0
+    var angka2 = 1
+
+    print("Limit bilangan $j: ")
+    while (angka1 <= j) {
+        print("$angka1 + ")
+
+        val sum = angka1 + angka2
+        angka1 = angka2
+        angka2 = sum
+    }
+}
+
+//RETURN VALUE Function
+fun returnValue(a:Int, b:Int): Int{
+    //return value. digunakan untuk mengembalikan nilai dan menetapkannya
+    //ke dalam variabel.
+    return (a + b)
+}
+
+/**
+ * EXTENSIONS FUNCTION -> fitur dari kotlin yg memungkinkan kita menambahkan
+ *                        property atau function pada suatu kelas tanpa mengubah
+ *                        atau meng-extend class tsb.
+ *
+ *                        Fitur ini akan sangat berguna ketika kita menggunakan library yg dibuat orang lain.
+ */
+//Contoh extensions function
+fun String.toTitleCase(): String {
+    return this.split(" ").joinToString(" "){
+        it.capitalize()
+    }
+}
+//fungsi diatas bertujuan utnuk merubah sebuah huruf normal text menjadi teks yg memiliki
+//Huruf Kapital di setiap awal karakternya.
+
+/**
+ * LAMBDA EXPRESSION -> disebut juga sbg Anonymous Function. adalah function yg
+ *                      tidak perlu dideklarasikan tetapi dapat lgsg digunakan
+ *                      dalam bentuk expressions.
+ *
+ *                      Karena sebuah function, lambda juga punya Parameter, Body, dan Return type
+ *
+ *                      -- ketika menggunakan lambda, kita tdk perlu mendeklarasikan tipe
+ *                         spesifik return value nya. Tipe tersebut ditentukan otomatis oleh compiler
+ *                      -- Lambda tdk perlu deklarasi 'fun' dan 'modifier' saat dibuat. Ini karena
+ *                         lambda bersifat ANONYMOUS
+ *                      -- parameter yg akan ditetapkan berada dalam kurung kurawal
+ *                      -- ketika ingin mengembalikan nilai, keyword 'return' tidak diperlukan lagi karena
+ *                         scr otomatis mengembalikan nilai dalam body.
+ *                      -- Lambda dapat digunakan sebagai ARGUMEN untuk sebuah parameter, dan juga
+ *                         dapat disimpan ke dalam variabel.
+ *
+ *                      DEKLARASI LAMBDA
+ *                             val lambda_nama : Data_type = {argumen_List -> code_body}
+ *
+ *                      ^^JIKA return value yg didapatkan bukan Unit, maka ekspresi terakhir di dalam
+ *                        lambda diperlakukan sbg return value. Ex:
+ *                             val sum = {a:Int, b:Int -> a+b}
+ */
+//dengan tipe anotasi dalam lambda expressions
+val dengan = {a: Int, b: Int -> a+b}
+
+//tanpa tipe anotasi
+val tanpa:(Int,Int) -> Int = {a,b -> a+b}
+
+fun lambda(){
+    val hasilDengan = dengan(2,3)
+    val hasilTanpa = tanpa(3,4)
+    println("Hasil dari 2 nomor adalah: $hasilDengan")
+    println("Hasil dari 2 nomor adalah: $hasilTanpa")
+
+    //langsung mencetak return value dari lambda tanpa perlu menyimpan ke dalam variabel
+    println(dengan(9,8))
+}
+
+/**
+ * HIGHER-ORDER FUNCTION -> merupakan function yg DAPAT MENERIMA FUNCTION LAIN SBG PARAMETER dan
+ *                          MENGEMBALIKAN FUNCTION
+ *
+ * Fungsinya : == membantu mengurangi redundansi kode (Kode yg berulang) dengan mengizinkan
+ *                fungsionalitas kode untuk diteruskan sebagai function ke function lain.
+ *             == memudahkan untuk developer membaca kode
+ *
+ * Kita dapat mengirimkan lambda expression sebagai prameter untuk Higher-Order Function.
+ * Ada 2 jenis function yg dapat dikirimkan:
+ *      -- Function dengan kembalian Unit
+ *      -- Function dgn kemablian salah satu nilai INteger, String, dll.
+ */
+//Contoh Higher-Order Function dengan kembalian Unit:
+//regular function definition
+fun printMe(s:String): Unit{
+    println(s)
+}
+//higher-order function definition
+fun higherOrder(str: String, myfunc: (String) -> Unit){
+    //invoke regular function using local name
+    myfunc(str)
+}
+fun utama(args: Array<String>){
+    //invoke higher-order function
+    higherOrder("Android Developer adalah cita-cita saya", ::printMe)
+}
+//Outputnya adalah: Android Developer adalah cita-cita saya
+//pada listing code diatas, diawal kita mendefinisikan regular function printMe() yg menerima
+//parameter tipe String dan mengembalikan Unit
+
+//(s:String) adalah satu"nya parameter. Unit mewakili return type.
+//Kemudian kita definidikan higher-order function dgn 2 parameter (yg pertama: String, yg kedua: function)
+//(s:String) mewakili parameter String
+
+//--- myfunc: (String) -> Unit --- mewakili bahwa ia menerima function sebagai parameter yg mengembalikan
+//Unit. Dari function utama(yg mana ini adalah function main sbeenanya. Sekali lagi dibuat spt itu agar tidak
+//sama dgn function main yg sebelumnya), higher-order function dipanggil dengan mengirimkan
+//data String dan function sebagai argumen.
