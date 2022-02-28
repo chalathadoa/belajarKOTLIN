@@ -1,0 +1,182 @@
+import javax.swing.text.Position
+
+/**
+ * Pada chapter ini kita akan mempelajari tentang SOLID PRINCIPLE.
+ * Prinsip ini diciptakan oleh Robert C. Martin pada tahun 2002. Akan tetapi akronim SOLID baru
+ * diperkenalkan oleh Michael Feathers. Tujuan prinsip ini ada 3:
+ *        -> Membuat kode yg mudah dipelihara
+ *        -> Mudah dipahami
+ *        -> Flexible dalam perubahan
+ * SOLID = (S) => Single Responsibility Principle
+ *         (O) => Open-Close Principle
+ *         (L) => Liskov Substitution Principle
+ *         (I) => Interface Segregation Principle
+ *         (D) => Dependency Inversion Principle
+ */
+
+/**
+ * Yang pertama adalah Single Responbility Principle (SRP)
+ *     -> Merupakan sebuah prinsip dimana "SEBUAH CLASS HARUS MEMILIKI SATU DAN HANYA SATU
+ *     TANGGUNG JAWAB"
+ */
+
+//contoh yang tidak menerapkan SRP :
+class Service {
+    fun login(){}
+    fun logout(){}
+    fun addToken(){}
+    fun getToken(){}
+    fun clearToken(){}
+}
+//kode diatas menunjukkan bahwa class Service memiliki banyak tanggungjawab.
+//contoh yg menerapkan SRP:
+class AuthService{
+    fun login(token: AuthTokenStorage){}
+    fun logout(token: AuthTokenStorage){}
+}
+class AuthTokenStorage{
+    fun addToken(){}
+    fun getToken(){}
+    fun clearToken(){}
+}
+//Pada kode diatas, kita memisahkannya menjadi 2 class berbeda. Ketika ingin menyimpan token
+//saat login, kita bisa memanggil class AuthTokenStorage. Sehingga kita mendapatkan function addToken(),
+//getToken(), dan clearToken().
+
+/**
+ * Selanjutnya adalah Open-CLose Principle (OCP)
+ *      -> merupakan pengertian dari class yang terbuka dan sudah teruji dengan baik, namun sangat tidak
+ *      tidak direkomendasikan untuk modifikasi (mengubah kode pada class yang ada).
+ *      Intinya, OCP terbuka untuk ditambahkan tetapi tertutup untuk dimodifikasi. Kita harus bisa menambah
+ *      fungsionalitas baru tanpa menyentuh atau memodifikasi kode yang sudah ada di class tsb.
+ *
+ *      Kenapa harus seperti itu? Karena setiap kali kita memodifikasi kode yg sudah ada, kita juga scr tdk
+ *      langsung mengambil resiko untuk menciptakan bug baru.
+ */
+
+//contoh yang tidak menerapkan OCP :
+class Mariott {
+    private val basePrice = 2000
+    private val tax = 500
+    fun getPrice(): Int {
+        return basePrice + tax
+    }
+}
+class Merdeka{
+    private val basePrice = 3000
+    fun getPrice(): Int{
+        return basePrice
+    }
+}
+class HotelFactory{
+    fun calculatePrices(hotels: List<Any>): Int {
+        var price = 0
+        hotels.forEach {
+            price += when (it){
+                is Mariott -> it.getPrice()
+                is Merdeka -> it.getPrice()
+                else -> throw RuntimeException("Hotel not listed")
+            }
+        }
+        return price
+    }
+}
+fun main(){
+    print(HotelFactory().calculatePrices(listOf(Mariott(), Merdeka())))
+}
+//Pada kode panjang diatas, pada class HotelFactory, akan diperikasa apakah hotel tersebut Mariott
+//atau Merdeka. JIka tidak keduanya, maka akan ditampilkan info "Hotel not listed"
+//Ketika kita ingin menambahkan hotel baru, kita perlu menyentuh kelas PriceFactory untuk mengubah isinya
+//dimana hal itu melanggar aturan OCP.
+
+//contoh yang menerapkan OCP :
+//untuk mengubah agar kode diatas menaati prinsip OCP, maka kita perlu menambahkan interface diatas,
+//dan menghilangkan expressions when pada class HotelFactory
+interface Hotel {
+    fun getPrice(): Int
+}
+//perubahan pada class HotelFactory. (tambahan s pada kata hotel hanya agar nama class tidak menyamai nama class sebelumnya
+class HotelsFactory{
+    fun calculatePrices(hotels: List<Hotel>): Int{
+        var totalPrice = 0
+        hotels.forEach {
+            totalPrice += it.getPrice()
+        }
+        return totalPrice
+    }
+}
+//pada perbaikan kode diatas, kita memanfaatkan interface (karena interface dan abstraksi tidak bisa diwarisi)
+//sebagai penampung sebuah function dimana function tsb dapat dipanggil oleh class lain. Dan untuk class yg
+//memanggil tscb akan otomatis mewarisi semua function yg ada pada interface tsb.
+
+//Perbedaan interface dan abstract class. Interface dapat memiliki deklarasi method abstrak akan tetapi
+//TIDAK DAPAT MENYIMPAN STATE. Interface dapat memiliki properti tapi harus abstrak.
+//interface tidak bisa memiliki prameter, abstrack class bisa, dikarenakan abstract class sebenarnya adalah class
+//setengah jadi.
+interface MyInterface {
+    //deklarasi properti harus abstract
+    val prop: Int //abstract
+    val propWithImplementation : String
+        get () = "foot"
+    fun bar()
+    fun foot(){
+        print (prop)
+    }
+}
+//Implementasi Interface. Sebuah class atau object dapat mengimplementasikan 1/lebih interfaces
+class Child : MyInterface{
+    override val prop: Int = 29
+    override fun bar(){
+        //body
+    }
+}
+//Interfaces Inheritance
+//Sebuah interface dapat diturunkan dari interfaces lainnya. dan keduanya menyediakan implementasi
+//untuk membernya dan mendeklarasikan fungsi baru dan propertinya.
+
+interface Named {
+    val name: String
+}
+interface Person: Named{
+    val firstName : String
+    val lastName : String
+
+    override val name: String get() = "$firstName $lastName"
+}
+data class Employee(
+    override val firstName: String,
+    override val lastName: String,
+    val position: Position
+) : Person
+
+/**
+ * Selanjutnya adalah Liskov Substitution Principle (LSP)
+ *      -> sesuai namanya, prinsip ini dinamai oleh Barbara Liskov, seorang ilmuwan komputer.
+ *      -> prinsipnya adalah "SEBUAH OBJECT HARUS DAPAT DIGANTI DENGAN TURUNAN subClass-nya TANPA MENGUBAH
+ *         PERILAKU PROGRAM."
+ *      -> Jadi, konsep dasarnya adalah kita harus dapat menggunakan subClass daripada mainClass yg telah di extend
+ *      tanpa perlu membuat perubahan apapun pada kode kita.(subClass harus dapat mensubtitusikan/menggantikan mainClass)
+ *
+ *Ada 4 poin dalam pinsip LSP ini:
+ *     => Contravariant and Covariant == Contravariance adalah KONVERSI CLASS DARI SUBCLASS KE CLASS YG TINGKAT
+ *                                       HIRARKINYA LEBIH TINGGI
+ *                                    == Covariance adalah KONVERSI CLASS DI HIRARKI TERTINGGI KE CLASS YG
+ *                                       LEBIH SPESIFIK
+ *
+ *     => Preconditions dan Postconditions  == Preconditions (Ketika kita harus memastikan data yg dibutuhkan server
+ *                                             SEBELUM DITAMPILKAN)
+ *                                          == Poatconditions (Data yg diambil dari server dpt digunakan oleh kita untuk
+ *                                             MENAMPILKANNYA KE USER)
+ *
+ *     => Invariant == menggambarkan KONDISI PROSES YG BENAR, SEBELUM PROSES DIMULAI DAN TETAP BENAR SETELAHNYA.
+ *                     contoh, class yg menyertakan function yg dapat membaca teks dari file. Jika function tsb menangani
+ *                     pembukaan dan penutupan file, invariant MEMASTIKAN bahwa file TIDAK DIBUKA sebelum pemanggilan
+ *                     function atau sesudahnya.
+ *
+ *                     Untuk mematuhi prinsip LSP invariant dari mainClass TIDAK BOLEH DIUBAH oleh subClass.
+ *
+ *     => Constraint == merupakan BATASAN YG DITENTUKAN OLEH mainClass. MainClass menentukan bahwa anggota baru atau yg
+ *                      dimodifikasi tidak boleh mengubah status object dgn cara yg tidak diizinkan oleh mainClass.
+ *                      Semisal class dasar mewakili object dgn ukuran yg tetap, subClass tidak diizinkan mengubah ukuran ini.
+ */
+//Untuk Listing code LSP ini akan dibahas di file yang berbeda
