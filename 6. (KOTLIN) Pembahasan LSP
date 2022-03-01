@@ -1,0 +1,37 @@
+/**
+ * Listing code dibawah ini merupakan pembahasan yg benar dari contoh prinsip LSP yang kita bahas
+ * pada bab sebelumnya. Disini kita akan membuat program untuk menghitung luas
+ * persegi dan persegi panjang dengan menerapkan LSP. Dimana subClass HARUS DAPAT
+ * MENERAPKAN BEHAVIOR PADA mainClass.
+ */
+//Pada program rectangle kemarin, saat kita menginputkan 2 nilai yang sama, hasil yang keluar akan berbeda.
+//Untuk itu, di program kali ini, kita akan membuat Main Class baru dengan nama 'Shape' dan membuat
+//sebuah abstract fun dengan nama 'area'
+
+//Membuat Main Class Shape
+abstract class Shape {
+    //Membuat abstract function dengan nama 'area'
+    abstract fun area(): Int
+}
+//Selanjutnya pada subClass Rectangle2 dan Square2 akan mensubtitusikan/menggantikan Main Class 'Shape'
+//Masing"subClass juga mendefinisikan kebutuhan constructornya masing".
+class Rectangle2(var width:Int, var height: Int): Shape(){
+    override fun area(): Int {
+        return width*height
+    }
+}
+class Square2 (var edge: Int): Shape(){
+    override fun area(): Int {
+        return edge*edge
+    }
+}
+fun main(){
+    val rectangle1: Shape = Rectangle2(2,3)
+    val rectangle2: Shape = Square2(3)
+
+    val rectangle1Hasil = rectangle1.area().toString()
+    println(rectangle1Hasil) //Hasilnya akan keluar 6
+    val rectangle2Hasil = rectangle2.area().toString()
+    println(rectangle2Hasil) //Hasilnya akan keluar 9 karena sisi kuadrat
+}
+//dengan penataan kode seperti diatas, maka hasil yang kelaur akan sesuai rumus persegi dan persegi panjang.
