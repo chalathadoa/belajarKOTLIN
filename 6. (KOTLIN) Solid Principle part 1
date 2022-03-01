@@ -179,4 +179,81 @@ data class Employee(
  *                      dimodifikasi tidak boleh mengubah status object dgn cara yg tidak diizinkan oleh mainClass.
  *                      Semisal class dasar mewakili object dgn ukuran yg tetap, subClass tidak diizinkan mengubah ukuran ini.
  */
-//Untuk Listing code LSP ini akan dibahas di file yang berbeda
+
+//contoh yg TIDAK MENERAPKAN LSP
+open class Rectangle {
+    open var width: Int = 0
+    open var height: Int = 0
+    open fun area():Int {
+        //class Rectangle ini adalah untuk rumus persegi panjang
+        return width*height
+    }
+}
+//membuat subClass bernama 'Square' yg merupakan subClass dari 'Rectangle'
+class Square: Rectangle(){
+    override var width: Int
+        get() = super.width
+        set(width) {
+            super.width = width
+            super.height = width
+        }
+    override var height: Int
+        get() = super.height
+        set(height) {
+            super.width = height
+            super.height = height
+            //2 baris kode diatas berarti lebar dan tinggi telah didefinisikan sama"menjadi SISI (height)
+        }
+}
+//dibawah ini aslinya adalah main function
+fun utama(){
+    val rectangle1: Rectangle = Rectangle()
+    rectangle1.width = 2
+    rectangle1.height = 3
+
+    val rectangle1Hasil = rectangle1.area().toString()
+    println("HASIL RECTANGLE 1: ")
+    println(rectangle1Hasil) //Output yg akan keluar adalah 6
+
+    val rectangle2: Rectangle = Square()
+
+    rectangle2.width = 2
+    rectangle2.height = 3
+
+    val rectangle2Hasil = rectangle2.area().toString()
+    println("HASIL RECTANGLE 2: ")
+    println(rectangle2Hasil) //Output yg akan keluar adalah 9
+}
+//Bisa dilihat bahwa hasil dari rectangle1 dan rectangle2 akan berbeda
+//padahal width an height yang diinputkan sama.
+//Untuk pembahasan kode yg benar akan dibahas di file selanjutnya.
+
+open class Ayah(){
+    open fun batuk(){
+        println("Tidur jam 12")
+    }
+    open fun diabetes(){
+    }
+    fun ngelawak(){
+    }
+}
+
+class Nnak: Ayah(){
+    override fun batuk(){
+        super.batuk()
+    }
+    //keyword 'super' diatas menunjukkan bahwa ada 2 opsi body yang dapat dipilih.
+    //yaitu bodydari Bapak atau body baru yg dibuat Anak. Dan yang akan diprint adalah keduanya.
+
+    fun coba(){
+        TODO("Not yet implemented")
+    }
+    //sedangkan 'TODO' berarti keyword dari Kotlin untuk mengingatkan kita mengisi body dari
+    //function tersebut. Mengingat body dari interface tidak memiliki isi, jadi harus kita isi.
+    //Kalau body dari class Main Ayah, kita bisa memilih 2 body, body asal atau membuat body baru.
+}
+interface interpace {
+    fun coba()
+    fun njajal()
+    fun lagek ()
+}
