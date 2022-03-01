@@ -1,0 +1,147 @@
+/**
+ * Pada bab kemarin, kita telah membahas 3 prinsip pertama dari SOLID. Yaitu Single, Open-close, dan Liskov.
+ * Selanjutnya kita akan membahas Interface Segregation Principle dan Dependency Inversion Principle.
+ */
+
+/**
+ * Prinsip nomor 4 adalah Interface Segregation Principle (ISP).
+ *     -> dikemukakan oleh Robert Cecil Martin dalam bukunya 'Design Principle'.
+ *     -> Clients TIDAK BOLEH DIPAKSA UNTUK TERGANTUNG PADA METHODS YANG TIDAK MEREKA PAKAI.
+ *
+ *     Maksudnya adalah ketika kita membuat program dan memisahkannya kedalam INTERFACE, kita harus
+ *     membuat beberapa interface melalui beberapa FUNCTION yg hanya sesuai dengan kebutuhan.
+ *
+ *     Terkadang ketika kita membuat aplikasi dengan function yg berjumlah banyak, class lain yg bergantung
+ *     pada class tsb hanya membutuhkan beberapa function saja dari class Main tsb.
+ *     Mungkin ini akan lebih efisien karena kita tidak perlu mendeklarasikan class baru setiap membuat kumpulan function.
+ *
+ *     Akan tetapi ternyata ini akan membuat interface semakin gemuk dan menyusahkan ketika kita melakukan maintenance
+ *     dan bug fixing.
+ */
+//contoh kode yg tidak memakai konsep ISP
+interface Animal {
+    fun eat()
+    fun sleep()
+    //fun fly()
+}
+class Cat: Animal{
+    override fun eat(){
+        println("Cat is eating Whiskas")
+    }
+    override fun sleep(){
+        println("Cat is sleeping at my own bed")
+    }
+    //dibuat class Main Animal dimana memiliki 3 fungsi. Akan tetapi,
+    //Cat tidak bisa terbang, jadi seharusnya function tersebut tidak ada.
+
+    //override fun fly() {
+        //TODO("Not yet implemented")
+    //}
+}
+class Bird: Animal, FlyingAnimal{
+    override fun eat(){
+        println("Bird is eating seeds")
+    }
+    override fun sleep() {
+        println("Bird is sleeping in a nest")
+    }
+
+    override fun fly() {
+        println("Bird can fly")
+    }
+}
+//untuk menghindari interface semakin gemuk dikarenakan banyaknya function yg tidak diperlukan,
+//maka kita hanya perlu menambahkan interface FlyingAnimal untuk binatang yg bisa terbang.
+interface FlyingAnimal{
+    fun fly()
+}
+
+/**
+ * dan yg terakhir adalah Dependency Inversion Principle (DIP)
+ *     -> Prinsip ini juga dikembangkan oleh Robert C. Martin. Prinsip"nya adalah:
+ *           == High-level module tidak boleh bergantung pada low-level module. Keduanya harus bergantung pada ABSTRAKSI.
+ *           == Abstraction tidak boleh bergantung pada detail. Detail harus bergantung pada abstraction.
+ *
+ *     -- High-level Module : Class yg menjalankan aksi dgn menggunakan alat
+ *     -- Low-level Module : Alat yg diperlukan untuk menjalankan sebuah tindakan.
+ *     -- Abstraction : Interface yg menghubungkan 2 Class.
+ *
+ *     Maksudnya adalah, high-level module TIDAK BOLEH DIGABUNGKAN DENGAN low-level module yg digunakan umtuk
+ *     menjalankan suatu tindakan. Sebaliknya mereka harus menyaty dgn sebuah interface yg memungkinkan low-level module
+ *     terhubung dengan high-level module.
+ *
+ *     High-level module dan abstraction/interface seharusnya TIDAK BOLEH TAU CARA KERJA low-level module.
+ *     Namun low-level module tsb harus memnuhi spesifikasi abstraction.
+ *
+ *     ^^ Tujuan dari prinsip ini adalah untuk mengurangi ketergantungan high-level module pada low-level
+ *     module dengan memperkenalkan abstraction/interface.
+ *
+ *     ^^ Fungsi interface sebenarnya juga digunakan sebagai penghubung.
+ */
+//Contoh program yg tidak menerapkan DIP
+//Disini kita akan membuat program yang akan mengatur pemanas ruangan dalam sebuah rumah
+//Kita membutuhkan class AC bertipe suhu Fahrenheit dan Radiator bertipe suhu Celcius.
+class Radiator {
+    var temperaturCelcius: Int = 0
+    fun turnOn(newTemperaturCelcius: Int){
+        temperaturCelcius = newTemperaturCelcius
+    }
+}
+class AC {
+    var temperaturFahrenheit: Int = 0
+    fun turnOn(newTemperaturFahrenheit: Int){
+        temperaturFahrenheit = newTemperaturFahrenheit
+    }
+    //class Radiator dan AC memiliki fungsi turnOn yang sama, padahal mereka memiliki output yang beda.
+    //Dimana yg satu outputnya adalah Celcius dan satunya lagi Fahrenheit.
+    //Seharusnya 2 class tsb memiliki prosedur yg berbeda.
+}
+//membuat class untuk memanggil metode pengatur panas ruangan.
+class SmartHome{
+    var radiator: Radiator = Radiator()
+    var recomTemperaturCelcius: Int = 20
+    fun warmUpRoom(){
+        radiator.turnOn(recomTemperaturCelcius)
+        //jika kita mengubah radiator ke ac, kode akan berubah seperti ini
+        //AC.turnOn(recomTemperaturFahrenheit)
+        //dan kode tersebut akan error.
+    }
+}
+//class smarthome diatas bergantung pada kelas radiator dan melanggar prinsip open-close.
+//function yg dipanggil adalah turnOn yg memberi perintah memanaskan ruangan hingga 20 Celcius.
+//Misal kita memilih mengabaikan prinsip DIP, akan terjadi beberapa bug. Seperti kita disuruh mengirimkan
+//suhu yg disarankan dalam Celcius, tetapi metode AC yg dibuat mengharapkan dalam Fahrenheit.
+
+//Untuk itu kita butuh function yg dapat mengubah Fahrenheit ke Celcius.
+//Pertama"kita membuat interface untuk menghandle function turnOn yg nanti akan dipanggil masing"class AC dan radiator.
+interface Heating{
+    fun turnOn(newTemperaturCelcius: Int)
+}
+//kemudian meng extend class radiator ke heating.
+class RAdiator: Heating{
+    var tempCel: Int=0
+    override fun turnOn(newTemperaturCelcius: Int) {
+        tempCel = newTemperaturCelcius
+    }
+}
+//kemudian di dalam class AC akan ditambahkan konversi nilai celcius ke Fahrenheit terlebih dahulu.
+class ASE: Heating{
+    var tempFah: Int=0
+    override fun turnOn(newTemperaturCelcius: Int) {
+        tempFah= newTemperaturCelcius *9/5+32
+    }
+}
+class SEmartHome{
+    //menambahkan kontrol untuk radiator. Sekarang kita jadi punya jawaban untuk pertanyaan
+    //apa yg terjadi jika kita mengganti radiator ke AC?.
+    //karena kelas kita sudah bergantung pada interface daripada kelas lain yg di extend.
+    var RAdiator:Heating = RAdiator()
+    var recomTempCel: Int = 20
+
+    fun warmUp(){
+        RAdiator.turnOn(recomTempCel)
+        //Karena kita bergantung pada interface yg umum maka tidak ada peluang yg salah.
+    }
+}
+//dengan cara kode baru tsb, ketika kita input satu value ke dalam 2 class tsb,
+//valuenya akan memberikan output yg benar karena kita sudah meng handlenya di dlm interface.
