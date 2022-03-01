@@ -193,6 +193,7 @@ open class Rectangle {
 class Square: Rectangle(){
     override var width: Int
         get() = super.width
+        //get mengambil value, kalau set mengubah value width yg ada di main class
         set(width) {
             super.width = width
             super.height = width
@@ -223,9 +224,13 @@ fun utama(){
     val rectangle2Hasil = rectangle2.area().toString()
     println("HASIL RECTANGLE 2: ")
     println(rectangle2Hasil) //Output yg akan keluar adalah 9
+
+    //seharusnya square itu tidak di extend ke rectangle, dikarenakan memiliki rumus fungsi yg beda.
+    //Seharusnya kita membuat 1 class yg bertindak sebagai parent yg tidak terikat pada 1 rumus saja, yaitu
+    //class abstract. Dalam kasus ini kita akan membuat class abstract bernama Shape.
 }
 //Bisa dilihat bahwa hasil dari rectangle1 dan rectangle2 akan berbeda
-//padahal width an height yang diinputkan sama.
+//padahal width an height yang diinputkan sama. Ini dikarenakan function anak dipaksakan memiliki mainClass yang sama.
 //Untuk pembahasan kode yg benar akan dibahas di file selanjutnya.
 
 open class Ayah(){
