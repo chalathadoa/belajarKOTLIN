@@ -11,6 +11,18 @@
  *             -- var = jenis yg dapat diubah nilai variabelnya (Mutable)
  *
  */
+ 
+ /**
+ * Ada beberapa escaped yang dibutuhkan ketika kita ingin mencetak karakter tertentu dalam string. Misal karakter '!', tanda petik dua, dsb.
+ * Untuk tanda petik dua misalnya, kita akan menuliskan tanda backslash diantara nya seperti berikut:
+ * val statement = "Kotlin is \"Awesome!\""
+ * Selain \” di atas, terdapat beberapa karakter lain yang dapat digunakan untuk melakukan escaped di dalam sebuah String, antara lain:  
+ * \t: menambah tab ke dalam teks.
+ * \n: membuat baris baru di dalam teks. 
+ * \’: menambah karakter single quote kedalam teks.
+ * \”: menambah karakter double quote kedalam teks.
+ * \\: menambah karakter backslash kedalam teks.
+ */
 
 fun main(){
     val janDiubah = "Jokowi"
